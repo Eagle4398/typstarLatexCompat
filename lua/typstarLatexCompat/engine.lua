@@ -41,7 +41,14 @@ M.in_math = function()
         and not utils.cursor_within_treesitter_query(ts_string_query, 0, 0, cursor)
 end
 
-M.in_markup = function() return utils.cursor_within_treesitter_query(ts_markup_query, 1, 2) end
+M.in_markup = function()
+    if vim.fn.exists('*vimtex#syntax#in_mathzone') == 1 then
+        return vim.fn['vimtex#syntax#in_mathzone']() == 0
+    end
+    local cursor = utils.get_cursor_pos()
+    return utils.cursor_within_treesitter_query(ts_markup_query, 1, 2)
+end
+
 M.not_in_math = function() return not M.in_math() end
 M.not_in_markup = function() return not M.in_markup() end
 M.snippets_toggle = true
@@ -169,7 +176,7 @@ function M.engine(trigger, opts)
 
         -- blacklist
         for _, w in ipairs(opts.blacklist) do
-            if line_full:sub(-#w) == w then return nil end
+            if line_full:sub(- #w) == w then return nil end
         end
         return whole, captures
     end
