@@ -31,8 +31,8 @@ local greek_letters_map = {
     ['s'] = 'sigma',
     ['t'] = 'tau',
     ['u'] = 'upsilon',
-    ['v'] = 'nu', -- look
-    ['w'] = 'omega', -- look
+    ['v'] = 'nu',      -- look
+    ['w'] = 'omega',   -- look
     ['x'] = 'xi',
     ['y'] = 'upsilon', -- look
     ['z'] = 'zeta',
@@ -105,33 +105,37 @@ local prepend_space = function(_, snippet, _, idx)
 end
 
 return {
-    -- latin/greek
-    snip(':([A-Za-z0-9])', '$<>$ ', { cap(1) }, markup),
-    snip(';(' .. trigger_greek .. ')', '$<>$ ', { d(1, get_greek) }, markup),
-    snip(';(' .. trigger_greek .. ')', '<>', { d(1, get_greek) }, math),
+    snip(':([A-Za-z0-9])', '\\(<>\\) ', { cap(1) }, markup),
+    snip(';(' .. trigger_greek .. ')', '\\(\\<>\\) ', { d(1, get_greek) }, markup),
+    snip(';(' .. trigger_greek .. ')', '\\<>', { d(1, get_greek) }, math),
 
     -- indices
+    -- \these capture groups try to match $$ or \(\)
     snip(
-        '\\$(' .. trigger_index_pre .. ')\\$' .. ' (' .. trigger_index_post .. ')([^\\w])',
+        '(?:\\$|\\\\\\()(' .. trigger_index_pre .. ')(?:\\$|\\\\\\))' .. ' (' .. trigger_index_post .. ')([^\\w])',
         '$<>$<>',
         { d(1, get_index, {}, { user_args = { 1, 2, false } }), d(2, prepend_space, {}, { user_args = { 3 } }) },
         markup,
         500,
         { maxTrigLength = 13 }
     ),
+
+    -- Math mode index: x1 -> x_1
     snip(
         '(' .. trigger_index_pre .. ')' .. '(' .. trigger_index_post .. ')([^\\w])',
         '<><>',
         { d(1, get_index, {}, { user_args = { 1, 2, true } }), d(2, prepend_space, {}, { user_args = { 3 } }) },
         math,
         200,
-        { maxTrigLength = 10 } -- epsilon123
+        { maxTrigLength = 10 }
     ),
 
     -- series of numbered letters
-    snip('ot(\\w) ', '1, 2, ..., <> ', { cap(1) }, math, 800), -- 1, 2, ..., n
-    snip('(' .. trigger_index_pre .. ') ot ', '<>_1, <>_2, ... ', { cap(1), cap(1) }, math), -- a_1, a_2, ...
-    snip('(' .. trigger_index_pre .. ') ot(\\w+) ', '<> ', { d(1, get_series) }, math, nil, { maxTrigLength = 13 }), -- a_1, a_2, ... a_j or a_1, a_2, a_2, a_3, a_4, a_5
+    snip('ot(\\w) ', '1, 2, \\dots, <> ', { cap(1) }, math, 800),
+
+    snip('(' .. trigger_index_pre .. ') ot ', '<>_1, <>_2, \\dots ', { cap(1), cap(1) }, math),
+
+    snip('(' .. trigger_index_pre .. ') ot(\\w+) ', '<> ', { d(1, get_series) }, math, nil, { maxTrigLength = 13 }),
 
     -- misc
     snip('(' .. trigger_index_pre .. ')bl', 'B_<> (<>) ', { cap(1), i(1, 'x_0') }, math, 100),
