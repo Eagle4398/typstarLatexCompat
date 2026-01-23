@@ -18,6 +18,11 @@ This does not include latex specific snippets. Find e.g. [here](https://github.c
     config = function()
         require('typstarLatexCompat').setup()
 
+        vim.keymap.set("i", "<C-d>", "<Esc>:TypstarLatexCompatToggleSnippets<CR>a",
+            { noremap = true, desc = 'Toggle TypstarLatexCompat Snippets' })
+        vim.keymap.set("n", "<C-d>", ":TypstarLatexCompatToggleSnippets<CR>",
+            { noremap = true, desc = 'Toggle TypstarLatexCompat Snippets' })
+
         local tp = require('typstarLatexCompat.autosnippets')
         local math = tp.in_math
         local markup = tp.in_markup
@@ -42,7 +47,7 @@ This does not include latex specific snippets. Find e.g. [here](https://github.c
     end
 }
 ```
-
+please bind the "disable snippets" to some key, here default is set to CTRL-D
 
 ---
 
