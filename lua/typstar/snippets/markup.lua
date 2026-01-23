@@ -22,19 +22,18 @@ local ctheorems = {
 }
 
 local wrappings = {
-    { 'll', '$', '$', '1+1' },
-    { 'BLD', '*', '*', 'abc' },
-    { 'ITL', '_', '_', 'abc' },
-    { 'HIG', '#highlight[', ']', 'abc' },
-    { 'UND', '#underline[', ']', 'abc' },
+    { 'ITL', '\\textit{', '}', 'abc' },
+    { 'BLD', '\\textbf{', '}', 'abc' },
+    { 'HIG', '\\hl{',     '}', 'abc' }, -- Requires \usepackage{soul} or similar
+    { 'UND', '\\uline{', '}', 'abc' }, -- Requires ulem package (recommended)
 }
 
 local document_snippets = {}
-local ctheoremsstr = '#%s[\n<>\n<>]'
+local ctheoremsstr = '\\begin{%s}\n<>\n<>\\end{%s} <>'
 local wrappingsstr = '%s<>%s'
 
 for _, val in pairs(ctheorems) do
-    local snippet = start(val[1], string.format(ctheoremsstr, val[2]), { indent_visual(1), cap(1) }, markup)
+    local snippet = start(val[1], string.format(ctheoremsstr, val[2], val[2]), { indent_visual(1), cap(1) }, markup)
     table.insert(document_snippets, snippet)
 end
 
@@ -44,12 +43,16 @@ for _, val in pairs(wrappings) do
 end
 
 return {
-    start('dm', '$\n<>\n<>$', { indent_visual(1), cap(1) }, markup),
-    helper.start_snip_in_newl('dm', '$\n\t<>\n$ <>', { helper.visual(1), i(2) }, markup, nil, { wordTrig = false }),
-    helper.list_snip('dm', '\n$\n\t<>\n$ <>', { helper.visual(1), i(2) }, markup, 1100, { prepend = '\t' }),
-    start('fla', '#flashcard(0)[<>][\n<>\n<>]', { i(1, 'flashcard'), indent_visual(2), cap(1) }, markup),
-    start('flA', '#flashcard(0, "<>")[\n<>\n<>]', { i(1, 'flashcard'), indent_visual(2), cap(1) }, markup),
-    snip('IMP', '$==>>$ ', {}, markup),
-    snip('IFF', '$<<==>>$ ', {}, markup),
+    helper.start_snip('dm', '\\[\n<>\n<>\\]', { indent_visual(1), cap(1) }, markup),
+    helper.start_snip_in_newl('dm', '\\[\n\t<>\n\\] <>', { helper.visual(1), i(2) }, markup, nil,
+        { wordTrig = false }),
+    -- not necessary in latex
+    -- helper.list_snip('dm', '\n\\[\n\t<>\n\\] <>', { helper.visual(1), i(2) }, markup, 1100, { prepend = '\t' }),
+
+    -- not functional in latex
+    -- start('fla', '#flashcard(0)[<>][\n<>\n<>]', { i(1, 'flashcard'), indent_visual(2), cap(1) }, markup),
+    -- start('flA', '#flashcard(0, "<>")[\n<>\n<>]', { i(1, 'flashcard'), indent_visual(2), cap(1) }, markup),
+    snip('IMP', '\\(\\implies\\) ', {}, markup),
+    snip('IFF', '\\(\\iff\\) ', {}, markup),
     unpack(document_snippets),
 }
