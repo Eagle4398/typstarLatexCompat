@@ -1,7 +1,7 @@
 local ls = require('luasnip')
 local i = ls.insert_node
 
-local helper = require('typstar.autosnippets')
+local helper = require('typstarLC.autosnippets')
 local cap = helper.cap
 local markup = helper.in_markup
 local snip = helper.snip

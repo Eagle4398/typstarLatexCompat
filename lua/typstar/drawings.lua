@@ -1,6 +1,6 @@
 local M = {}
-local config = require('typstar.config')
-local utils = require('typstar.utils')
+local config = require('typstarLC.config')
+local utils = require('typstarLC.utils')
 
 local affix = [[
 #figure(

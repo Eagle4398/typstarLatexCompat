@@ -1,5 +1,5 @@
 {
-  description = "typstar nix flake for development";
+  description = "typstarLC nix flake for development";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -24,8 +24,8 @@
         { system, ... }:
         let
           pkgs = import nixpkgs { inherit system; };
-          typstar = pkgs.vimUtils.buildVimPlugin {
-            name = "typstar";
+          typstarLC = pkgs.vimUtils.buildVimPlugin {
+            name = "typstarLC";
             src = self;
             buildInputs = [
               pkgs.vimPlugins.luasnip
@@ -35,7 +35,7 @@
         in
         {
           packages = {
-            default = typstar;
+            default = typstarLC;
             nvim =
               let
                 config = pkgs.neovimUtils.makeNeovimConfig {
@@ -55,8 +55,8 @@
                       store_selection_keys = "<Tab>",
                     })
 
-                    local typstar = require('typstar')
-                    typstar.setup({})
+                    local typstarLC = require('typstarLC')
+                    typstarLC.setup({})
 
                     vim.keymap.set({'n', 'i'}, '<M-t>', '<Cmd>TypstarToggleSnippets<CR>', { silent = true, noremap = true })
                     vim.keymap.set({'s', 'i'}, '<M-j>', '<Cmd>TypstarSmartJump<CR>', { silent = true, noremap = true })
@@ -70,7 +70,7 @@
                     EOF
                   '';
                   plugins = [
-                    typstar
+                    typstarLC
                     pkgs.vimPlugins.luasnip
                     pkgs.vimPlugins.nvim-treesitter
                     pkgs.vimPlugins.nvim-treesitter-parsers.typst

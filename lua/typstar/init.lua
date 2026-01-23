@@ -1,13 +1,13 @@
 local M = {}
 
-local config = require('typstar.config')
+local config = require('typstarLC.config')
 local luasnip = nil
 
 M.setup = function(args)
     config.merge_config(args)
-    local autosnippets = require('typstar.autosnippets')
-    local drawings = require('typstar.drawings')
-    local anki = require('typstar.anki')
+    local autosnippets = require('typstarLC.autosnippets')
+    local drawings = require('typstarLC.drawings')
+    local anki = require('typstarLC.anki')
 
     vim.api.nvim_create_user_command('TypstarToggleSnippets', autosnippets.toggle_autosnippets, {})
     vim.api.nvim_create_user_command('TypstarSmartJump', function() M.smart_jump(1) end, {})
