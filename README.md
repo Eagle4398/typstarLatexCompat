@@ -1,7 +1,7 @@
 ## this is an experimental latex compatibilty syntax-replace for [typstar snippets](https://github.com/arne314/typstar)
 
 - all anki features are removed.
-- requires (untested) treesitter or vimtex. (vimtex recommended)
+- requires vimtex (treesitter untested)
 
 This does not include latex specific snippets. Find e.g. [here](https://github.com/isaac098098/latex-luasnips/tree/main/snippets/tex) and add like this in Lazy (replacing the conditions provided by typstarLatexCompat):
 ```
