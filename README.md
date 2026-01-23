@@ -1,4 +1,4 @@
-## this is an experimental latex compatibilty drop-in-replace for [typstar snippets](https://github.com/arne314/typstar)
+## this is an experimental latex compatibilty syntax-replace for [typstar snippets](https://github.com/arne314/typstar)
 
 - all anki features are removed.
 - requires (untested) treesitter or vimtex. (vimtex recommended)
