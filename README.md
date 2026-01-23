@@ -42,6 +42,10 @@ This does not include latex specific snippets. Find e.g. [here](https://github.c
                 fmta([[\begin{<>}<>\end{<>}]],
                     { i(1), i(0), rep(1) }
                 ), { condition = tp.in_markup, show_condition = tp.in_markup }),
+            ---- or native here: 
+            tp.start_snip('beg', '\\begin{<>}\n<>\n<>\\end{<>} ', {i(1), visual(2, '', '\t', 1), tp.cap(1), rep(1),}, tp.in_markup),
+            tp.start_snip('ali', '\\begin{align}\n<>\n<>\\end{align} ', { visual(1, '', '\t', 1), tp.cap(1),}, tp.in_markup),
+            tp.start_snip('equ', '\\begin{equation}\n<>\n<>\\end{equation} ', { visual(1, '', '\t', 1), tp.cap(1),}, tp.in_markup),
         }
 
         ls.add_snippets("tex", latexsnips)
