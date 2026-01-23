@@ -4,7 +4,8 @@
 - requires (untested) treesitter or vimtex. (vimtex recommended)
 
 This does not include latex specific snippets. Find e.g. [here](https://github.com/isaac098098/latex-luasnips/tree/main/snippets/tex) and add like this in Lazy (replacing the conditions provided by typstarLatexCompat):
-```{
+```
+{
     "Eagle4398/typstarLatexCompat",
     ft = { "tex" },
     dependencies = { {
