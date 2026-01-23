@@ -1,8 +1,8 @@
 local M = {}
-local cfg = require('typstarLC.config').config.snippets
+local cfg = require('typstarLatexCompat.config').config.snippets
 local events = require('luasnip.util.events')
 local luasnip = require('luasnip')
-local utils = require('typstarLC.utils')
+local utils = require('typstarLatexCompat.utils')
 local fmta = require('luasnip.extras.fmt').fmta
 local lsengines = require('luasnip.nodes.util.trig_engines')
 local ts = vim.treesitter
@@ -177,7 +177,7 @@ end
 
 function M.toggle_autosnippets()
     M.snippets_toggle = not M.snippets_toggle
-    print(string.format('%sabled typstarLC autosnippets', M.snippets_toggle and 'En' or 'Dis'))
+    print(string.format('%sabled typstarLatexCompat autosnippets', M.snippets_toggle and 'En' or 'Dis'))
 end
 
 function M.setup()
@@ -194,7 +194,7 @@ function M.setup()
         end
         local autosnippets = {}
         for _, file in ipairs(cfg.modules) do
-            for _, sn in ipairs(require(('typstarLC.snippets.%s'):format(file))) do
+            for _, sn in ipairs(require(('typstarLatexCompat.snippets.%s'):format(file))) do
                 local exclude
                 local is_start = sn.trigger:match('^%^%(\\s%*%)')
                 if is_start then
@@ -205,7 +205,7 @@ function M.setup()
                 if not exclude then table.insert(autosnippets, sn) end
             end
         end
-        luasnip.add_snippets('latex', autosnippets)
+        luasnip.add_snippets('tex', autosnippets)
 
         if cfg.add_undo_breakpoints then
             vim.api.nvim_create_autocmd('User', {

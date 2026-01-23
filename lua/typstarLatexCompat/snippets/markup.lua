@@ -1,7 +1,7 @@
 local ls = require('luasnip')
 local i = ls.insert_node
 
-local helper = require('typstarLC.autosnippets')
+local helper = require('typstarLatexCompat.autosnippets')
 local cap = helper.cap
 local markup = helper.in_markup
 local snip = helper.snip
@@ -33,7 +33,7 @@ local ctheoremsstr = '\\begin{%s}\n<>\n<>\\end{%s} <>'
 local wrappingsstr = '%s<>%s'
 
 for _, val in pairs(ctheorems) do
-    local snippet = start(val[1], string.format(ctheoremsstr, val[2], val[2]), { indent_visual(1), cap(1) }, markup)
+    local snippet = start(val[1], string.format(ctheoremsstr, val[2], val[2]), { indent_visual(1), cap(1), i(1)}, markup)
     table.insert(document_snippets, snippet)
 end
 

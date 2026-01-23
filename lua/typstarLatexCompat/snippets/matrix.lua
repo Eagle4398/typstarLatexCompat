@@ -5,7 +5,7 @@ local sn = ls.snippet_node
 local t = ls.text_node
 local r = ls.restore_node
 
-local helper = require('typstarLC.autosnippets')
+local helper = require('typstarLatexCompat.autosnippets')
 local snip = helper.snip
 local math = helper.in_math
 

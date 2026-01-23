@@ -5,9 +5,9 @@ local i = ls.insert_node
 local s = ls.snippet_node
 local t = ls.text_node
 
-local helper = require('typstarLC.autosnippets')
-local utils = require('typstarLC.utils')
-local cfg = require('typstarLC.config').config.snippets
+local helper = require('typstarLatexCompat.autosnippets')
+local utils = require('typstarLatexCompat.utils')
+local cfg = require('typstarLatexCompat.config').config.snippets
 local math = helper.in_math
 local snip = helper.snip
 

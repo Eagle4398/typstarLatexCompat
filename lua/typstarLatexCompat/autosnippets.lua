@@ -1,4 +1,4 @@
-local M = require('typstarLC.engine') -- inherit all functions
+local M = require('typstarLatexCompat.engine') -- inherit all functions
 local luasnip = require('luasnip')
 
 function M.cap(i, transform_fn)
