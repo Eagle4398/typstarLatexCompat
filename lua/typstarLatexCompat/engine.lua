@@ -1,8 +1,8 @@
 local M = {}
-local cfg = require('typstar.config').config.snippets
+local cfg = require('typstarLatexCompat.config').config.snippets
 local events = require('luasnip.util.events')
 local luasnip = require('luasnip')
-local utils = require('typstar.utils')
+local utils = require('typstarLatexCompat.utils')
 local fmta = require('luasnip.extras.fmt').fmta
 local lsengines = require('luasnip.nodes.util.trig_engines')
 local ts = vim.treesitter
@@ -10,9 +10,21 @@ local ts = vim.treesitter
 local exclude_triggers_set = {}
 local last_keystroke_time = nil
 local lexical_result_cache = {}
-local ts_markup_query = ts.query.parse('typst', '(text) @markup')
-local ts_math_query = ts.query.parse('typst', '(math) @math')
-local ts_string_query = ts.query.parse('typst', '(string) @string')
+local ts_markup_query = ts.query.parse('latex', '(text) @markup')
+local ts_math_query = ts.query.parse('latex', [[
+    [
+        (inline_formula)
+        (displayed_equation)
+        (math_environment)
+    ] @math
+]])
+-- this is supposed to check if in math -> if in command -> if command is text/tax/mbox
+local ts_string_query = ts.query.parse('latex', [[
+    (generic_command
+        command: (_) @cmd_name
+        (#match? @cmd_name "^\\\\(text|tag|mbox|mathrm)$")
+    ) @text_command
+]])
 
 utils.generate_bool_set(cfg.exclude, exclude_triggers_set)
 vim.api.nvim_create_autocmd('TextChangedI', {
@@ -20,10 +32,15 @@ vim.api.nvim_create_autocmd('TextChangedI', {
 })
 
 M.in_math = function()
+    -- Use vimtex per default
+    if vim.fn.exists('*vimtex#syntax#in_mathzone') == 1 then
+        return vim.fn['vimtex#syntax#in_mathzone']() == 1
+    end
     local cursor = utils.get_cursor_pos()
     return utils.cursor_within_treesitter_query(ts_math_query, 0, 0, cursor)
         and not utils.cursor_within_treesitter_query(ts_string_query, 0, 0, cursor)
 end
+
 M.in_markup = function() return utils.cursor_within_treesitter_query(ts_markup_query, 1, 2) end
 M.not_in_math = function() return not M.in_math() end
 M.not_in_markup = function() return not M.in_markup() end
@@ -160,7 +177,7 @@ end
 
 function M.toggle_autosnippets()
     M.snippets_toggle = not M.snippets_toggle
-    print(string.format('%sabled typstar autosnippets', M.snippets_toggle and 'En' or 'Dis'))
+    print(string.format('%sabled typstarLatexCompat autosnippets', M.snippets_toggle and 'En' or 'Dis'))
 end
 
 function M.setup()
@@ -177,7 +194,7 @@ function M.setup()
         end
         local autosnippets = {}
         for _, file in ipairs(cfg.modules) do
-            for _, sn in ipairs(require(('typstar.snippets.%s'):format(file))) do
+            for _, sn in ipairs(require(('typstarLatexCompat.snippets.%s'):format(file))) do
                 local exclude
                 local is_start = sn.trigger:match('^%^%(\\s%*%)')
                 if is_start then
@@ -188,7 +205,7 @@ function M.setup()
                 if not exclude then table.insert(autosnippets, sn) end
             end
         end
-        luasnip.add_snippets('typst', autosnippets)
+        luasnip.add_snippets('tex', autosnippets)
 
         if cfg.add_undo_breakpoints then
             vim.api.nvim_create_autocmd('User', {

@@ -1,3 +1,57 @@
+## this is an experimental latex compatibilty drop-in-replace for [typstar snippets](https://github.com/arne314/typstar)
+
+- all anki features are removed.
+- requires (untested) treesitter or vimtex. (vimtex recommended)
+
+This does not include latex specific snippets. Find e.g. [here](https://github.com/isaac098098/latex-luasnips/tree/main/snippets/tex) and add like this in Lazy (replacing the conditions provided by typstarLatexCompat):
+```
+{
+    "Eagle4398/typstarLatexCompat",
+    ft = { "tex" },
+    dependencies = { {
+        "nvim-treesitter/nvim-treesitter",
+        enabled = true,
+        config = function()
+            require 'nvim-treesitter.configs'.setup {
+                ensure_installed = {"latex" } }
+        end
+    }, { "lervag/vimtex" } },
+    config = function()
+        require('typstarLatexCompat').setup()
+
+        vim.keymap.set("i", "<C-d>", "<Esc>:TypstarLatexCompatToggleSnippets<CR>a",
+            { noremap = true, desc = 'Toggle TypstarLatexCompat Snippets' })
+        vim.keymap.set("n", "<C-d>", ":TypstarLatexCompatToggleSnippets<CR>",
+            { noremap = true, desc = 'Toggle TypstarLatexCompat Snippets' })
+
+        local tp = require('typstarLatexCompat.autosnippets')
+        local math = tp.in_math
+        local markup = tp.in_markup
+        local ls = require("luasnip")
+        local s = ls.snippet
+        local sn = ls.snippet_node
+        local i = ls.insert_node
+        local c = ls.choice_node
+        local extras = require("luasnip.extras")
+        local rep = extras.rep
+        local fmta = require("luasnip.extras.fmt").fmta
+
+
+        local latexsnips = {
+            s({ trig = 'beg', name = 'begin/end', dscr = 'begin/end environment (generic)' },
+                fmta([[\begin{<>}<>\end{<>}]],
+                    { i(1), i(0), rep(1) }
+                ), { condition = tp.in_markup, show_condition = tp.in_markup }),
+        }
+
+        ls.add_snippets("tex", latexsnips)
+    end
+}
+```
+please bind the "disable snippets" to some key, here default is set to CTRL-D
+
+---
+
 # Typstar
 Neovim plugin for efficient (mathematical) note taking in Typst
 

@@ -1,5 +1,5 @@
 {
-  description = "typstar nix flake for development";
+  description = "typstarLatexCompat nix flake for development";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -24,8 +24,8 @@
         { system, ... }:
         let
           pkgs = import nixpkgs { inherit system; };
-          typstar = pkgs.vimUtils.buildVimPlugin {
-            name = "typstar";
+          typstarLatexCompat = pkgs.vimUtils.buildVimPlugin {
+            name = "typstarLatexCompat";
             src = self;
             buildInputs = [
               pkgs.vimPlugins.luasnip
@@ -35,13 +35,13 @@
         in
         {
           packages = {
-            default = typstar;
+            default = typstarLatexCompat;
             nvim =
               let
                 config = pkgs.neovimUtils.makeNeovimConfig {
                   customRC = ''
                     lua << EOF
-                    print("Welcome to Typstar! This is just a demo.")
+                    print("Welcome to TypstarLatexCompat! This is just a demo.")
 
                     vim.g.mapleader = " "
 
@@ -55,22 +55,21 @@
                       store_selection_keys = "<Tab>",
                     })
 
-                    local typstar = require('typstar')
-                    typstar.setup({})
+                    local typstarLatexCompat = require('typstarLatexCompat')
+                    typstarLatexCompat.setup({})
 
-                    vim.keymap.set({'n', 'i'}, '<M-t>', '<Cmd>TypstarToggleSnippets<CR>', { silent = true, noremap = true })
-                    vim.keymap.set({'s', 'i'}, '<M-j>', '<Cmd>TypstarSmartJump<CR>', { silent = true, noremap = true })
-                    vim.keymap.set({'s', 'i'}, '<M-k>', '<Cmd>TypstarSmartJumpBack<CR>', { silent = true, noremap = true })
+                    vim.keymap.set({'n', 'i'}, '<M-t>', '<Cmd>TypstarLatexCompatToggleSnippets<CR>', { silent = true, noremap = true })
+                    vim.keymap.set({'s', 'i'}, '<M-j>', '<Cmd>TypstarLatexCompatSmartJump<CR>', { silent = true, noremap = true })
+                    vim.keymap.set({'s', 'i'}, '<M-k>', '<Cmd>TypstarLatexCompatSmartJumpBack<CR>', { silent = true, noremap = true })
 
-                    vim.keymap.set('n', '<leader>e', '<Cmd>TypstarInsertExcalidraw<CR>', { silent = true, noremap = true })
-                    vim.keymap.set('n', '<leader>r', '<Cmd>TypstarInsertRnote<CR>', { silent = true, noremap = true })
-                    vim.keymap.set('n', '<leader>o', '<Cmd>TypstarOpenDrawing<CR>', { silent = true, noremap = true })
+                    vim.keymap.set('n', '<leader>e', '<Cmd>TypstarLatexCompatInsertExcalidraw<CR>', { silent = true, noremap = true })
+                    vim.keymap.set('n', '<leader>r', '<Cmd>TypstarLatexCompatInsertRnote<CR>', { silent = true, noremap = true })
+                    vim.keymap.set('n', '<leader>o', '<Cmd>TypstarLatexCompatOpenDrawing<CR>', { silent = true, noremap = true })
 
-                    vim.keymap.set('n', '<leader>a', '<Cmd>TypstarAnkiScan<CR>', { silent = true, noremap = true })
                     EOF
                   '';
                   plugins = [
-                    typstar
+                    typstarLatexCompat
                     pkgs.vimPlugins.luasnip
                     pkgs.vimPlugins.nvim-treesitter
                     pkgs.vimPlugins.nvim-treesitter-parsers.typst

@@ -1,13 +1,7 @@
 local M = {}
 
 local default_config = {
-    typstarRoot = nil, -- typstar installation location required to use default drawing templates (usually determined automatically)
-    anki = {
-        typstarAnkiCmd = 'typstar-anki',
-        typstCmd = 'typst',
-        ankiUrl = 'http://127.0.0.1:8765',
-        ankiKey = nil,
-    },
+    typstarLatexCompatRoot = nil, -- typstarLatexCompat installation location required to use default drawing templates (usually determined automatically)
     excalidraw = {
         assetsDir = 'assets',
         filename = 'drawing-%Y-%m-%d-%H-%M-%S',
@@ -45,14 +39,14 @@ local default_config = {
 
 function M.merge_config(args)
     M.config = vim.tbl_deep_extend('force', default_config, args or {})
-    M.config.typstarRoot = M.config.typstarRoot
-        or debug.getinfo(1).source:match('^@(.*)/lua/typstar/config%.lua$')
-        or '~/typstar'
+    M.config.typstarLatexCompatRoot = M.config.typstarLatexCompatRoot
+        or debug.getinfo(1).source:match('^@(.*)/lua/typstarLatexCompat/config%.lua$')
+        or '~/typstarLatexCompat'
     vim.list_extend(M.config.excalidraw.templatePath, {
-        { '%.excalidraw%.md$', M.config.typstarRoot .. '/res/excalidraw_template.excalidraw.md' },
+        { '%.excalidraw%.md$', M.config.typstarLatexCompatRoot .. '/res/excalidraw_template.excalidraw.md' },
     })
     vim.list_extend(M.config.rnote.templatePath, {
-        { '%.rnote$', M.config.typstarRoot .. '/res/rnote_template.rnote' },
+        { '%.rnote$', M.config.typstarLatexCompatRoot .. '/res/rnote_template.rnote' },
     })
 end
 
