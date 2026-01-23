@@ -2,12 +2,6 @@ local M = {}
 
 local default_config = {
     typstarLCRoot = nil, -- typstarLC installation location required to use default drawing templates (usually determined automatically)
-    anki = {
-        typstarLCAnkiCmd = 'typstarLC-anki',
-        typstCmd = 'typst',
-        ankiUrl = 'http://127.0.0.1:8765',
-        ankiKey = nil,
-    },
     excalidraw = {
         assetsDir = 'assets',
         filename = 'drawing-%Y-%m-%d-%H-%M-%S',

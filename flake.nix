@@ -66,7 +66,6 @@
                     vim.keymap.set('n', '<leader>r', '<Cmd>TypstarInsertRnote<CR>', { silent = true, noremap = true })
                     vim.keymap.set('n', '<leader>o', '<Cmd>TypstarOpenDrawing<CR>', { silent = true, noremap = true })
 
-                    vim.keymap.set('n', '<leader>a', '<Cmd>TypstarAnkiScan<CR>', { silent = true, noremap = true })
                     EOF
                   '';
                   plugins = [
