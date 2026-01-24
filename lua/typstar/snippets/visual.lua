@@ -41,7 +41,7 @@ local operations = { -- first boolean: existing brackets should be kept; second 
     { 'ci', 'circle', '', true, true },
     { 'td', 'tilde', '', true, true },
     { 'nr', 'norm', '', true, true },
-    { 'arr', 'arrow', '', true, true },
+    { 'arw', 'arrow', '', true, true },
     { 'vv', 'vec', '', true, true },
     { 'rt', 'sqrt', '', true, true },
     { 'flo', 'floor', '', true, true },
