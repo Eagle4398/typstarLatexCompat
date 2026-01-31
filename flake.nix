@@ -27,9 +27,9 @@
           typstarLatexCompat = pkgs.vimUtils.buildVimPlugin {
             name = "typstarLatexCompat";
             src = self;
-            buildInputs = [
-              pkgs.vimPlugins.luasnip
-              pkgs.vimPlugins.nvim-treesitter-parsers.typst
+            buildInputs = with pkgs.vimPlugins; [
+              nvim-treesitter-parsers.latex
+              luasnip
             ];
           };
         in
@@ -46,7 +46,10 @@
                     vim.g.mapleader = " "
 
                     require('nvim-treesitter.configs').setup {
-                      highlight = { enable = true },
+                      highlight = {
+                          enable = true,
+                          disable = {"latex"}
+                      },
                     }
 
                     local ls = require('luasnip')
@@ -68,12 +71,17 @@
 
                     EOF
                   '';
-                  plugins = [
-                    typstarLatexCompat
-                    pkgs.vimPlugins.luasnip
-                    pkgs.vimPlugins.nvim-treesitter
-                    pkgs.vimPlugins.nvim-treesitter-parsers.typst
-                  ];
+                  plugins =
+                    with pkgs.vimPlugins;
+                    [
+                      vimtex
+                      luasnip
+                      nvim-treesitter
+                      nvim-treesitter-parsers.latex
+                    ]
+                    ++ [
+                      typstarLatexCompat
+                    ];
                 };
               in
               pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped config;
