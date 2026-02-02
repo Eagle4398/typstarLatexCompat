@@ -170,8 +170,9 @@ function M.engine(trigger, opts)
         -- custom word trig
         local from = #line - #whole + 1
         local first_letter = line:sub(from - 1, from - 1)
-        if opts.wordTrig and from ~= 1 and (first_letter:byte(1) > 127 or first_letter:match('[%w._]') ~= nil) then
-            return nil
+        if from ~= 1 then
+            if line_full:match('%s(%S)%S*$') == '\\' then return end -- don't expand when preceded by a backslash
+            if opts.wordTrig and (first_letter:byte(1) > 127 or first_letter:match('[%w._]') ~= nil) then return nil end
         end
 
         -- blacklist
