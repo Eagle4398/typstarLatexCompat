@@ -29,6 +29,7 @@ local default_config = {
             'matrix',
             'markup',
             'visual',
+            'latex',
         },
         exclude = {}, -- list of triggers to exclude
         visual_disable = {}, -- visual.lua: list of triggers to exclude from visual selection mode
