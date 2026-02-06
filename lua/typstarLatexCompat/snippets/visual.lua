@@ -21,12 +21,12 @@ utils.generate_bool_set(cfg.visual_disable_postfix, visual_disable_postfix)
 
 local operations = {
     { 'vi',  '\\frac{1}',        '',                true,  true },
-    { 'bb',  '(',                ')',               true,  false }, -- add round brackets
-    { 'sq',  '[',                ']',               true,  false }, -- add square brackets
-    { 'st',  '\\{',              '\\}',             true,  false }, -- add curly brackets
-    { 'bB',  '(',                ')',               false, false }, -- replace with round brackets
-    { 'sQ',  '[',                ']',               false, false }, -- replace with square brackets
-    { 'BB',  '',                 '',                false, false }, -- remove brackets
+    { 'bb',  '\\left(',          '\\right)',        true,  false },              -- add round brackets
+    { 'sq',  '\\left[',          '\\right]',        true,  false },              -- add square brackets
+    { 'st',  '\\{',              '\\}',             true,  false },              -- add curly brackets
+    { 'bB',  '\\left(',          '\\right)',        false, false },              -- replace with round brackets
+    { 'sQ',  '\\left[',          '\\right]',        false, false },              -- replace with square brackets
+    { 'BB',  '',                 '',                false, false },              -- remove brackets
     { 'ss',  '\\text',           '',                false, true },
     { 'chv', '\\left\\langle',   '\\right\\rangle', true,  false },
     { 'abs', '\\left|',          '\\right|',        true,  false },
