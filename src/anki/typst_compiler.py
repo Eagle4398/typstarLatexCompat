@@ -42,8 +42,15 @@ class TypstCompiler:
         tmp_path = f"{directory}/tmp_{random.randint(1, 1000000000)}.typ"
         with open(tmp_path, "w", encoding="utf-8") as f:
             f.write(src)
-        proc = await asyncio.create_subprocess_shell(
-            f"{self.typst_cmd} compile {tmp_path} - --root {self.typst_root_dir} --format svg",
+        proc = await asyncio.create_subprocess_exec(
+            self.typst_cmd,
+            "compile",
+            tmp_path,
+            "-",
+            "--root",
+            str(self.typst_root_dir),
+            "--format",
+            "svg",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )

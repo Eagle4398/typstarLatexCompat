@@ -1,0 +1,16 @@
+name: Lint Lua and Python
+
+on:
+  workflow_call:
+
+jobs:
+  lint-lua:
+    uses: ./.github/workflows/setup-nix.yml
+    with:
+      command: nix run .#lint-lua
+
+  lint-python:
+    uses: ./.github/workflows/setup-nix.yml
+    with:
+      command: nix run .#lint-python
+
