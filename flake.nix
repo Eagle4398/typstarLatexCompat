@@ -69,9 +69,22 @@
           nvimFullBuild = nvimBuild [ typstarPlugin ];
           nvimDevBuild = nvimBuild [ ];
 
+          luarcBase = builtins.fromJSON (builtins.readFile ./.luarc.json);
+
+          luarc = pkgs.writeText "luarc.json" (
+            builtins.toJSON (
+              luarcBase
+              // {
+                "workspace.library" = (luarcBase."workspace.library" or [ ]) ++ [
+                  "${pkgs.neovim-unwrapped}/share/nvim/runtime/lua"
+                ];
+              }
+            )
+          );
+
           lintLua = pkgs.writeShellScriptBin "lint-lua" ''
             set -e
-            ${pkgs.lua-language-server}/bin/lua-language-server --check .
+            ${pkgs.lua-language-server}/bin/lua-language-server --check . --configpath ${luarc}
             ${pkgs.stylua}/bin/stylua --check .
           '';
           lintPython = pkgs.writeShellScriptBin "lint-python" ''
