@@ -128,7 +128,10 @@
                 just
                 neovim
                 tree-sitter
+                lua-language-server
+                stylua
               ];
+              LUARC = luarc;
               shellHook = # Bash
                 ''
                   just lazy --headless -c "q"
