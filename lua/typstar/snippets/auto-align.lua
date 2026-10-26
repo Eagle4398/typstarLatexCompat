@@ -97,11 +97,14 @@ local function max_match_from_ops(txt, ops, sorted_ops)
     return results
 end
 
-
+---@return { results: table, start_boundary: TSNode?, end_boundary: TSNode?, container: TSNode? }
 local function collect_ops_between_last_breaks(ops)
     -- SETUP VARS
     local bufnr = vim.api.nvim_get_current_buf()
     local parser = vim.treesitter.get_parser(bufnr)
+    if not parser then
+        return { results = {}, start_boundary = nil, end_boundary = nil, container = nil }
+    end
     parser:parse()
     local cursor_row, cursor_col = unpack(vim.api.nvim_win_get_cursor(0))
     cursor_row = cursor_row - 1
@@ -152,7 +155,7 @@ local function collect_ops_between_last_breaks(ops)
 
     -- 'a' (start) and 'b' (end) are the segment boundaries we found in the walk.
     local a_sr, a_sc = last2:range()
-    local b_sr, b_sc = last1:range()
+    local b_sr, b_sc = (last1 --[[@as TSNode]]):range()
 
     -- Sort operators by length descending for maximal matching
     local sorted_ops = {}
@@ -279,7 +282,9 @@ return {
                     elseif start_bound then
                         -- Fallback: No operators found. Align to the first symbol in the segment.
                         local sr, sc, er, ec = start_bound:range()
-                        local br, bc = scan_result.end_boundary:range()
+                        local eb = scan_result.end_boundary
+                        if not eb then return end
+                        local br, bc = eb:range()
 
                         -- Determine the row/col where the actual mathematical content starts.
                         -- If bounded by the container itself (math or group), skip the header char (e.g. '$' or '(').
