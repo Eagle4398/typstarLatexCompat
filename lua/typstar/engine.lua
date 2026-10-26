@@ -30,7 +30,7 @@ M.in_markup = function() return utils.cursor_within_treesitter_query(ts_markup_q
 M.not_in_math = function() return not M.in_math() end
 M.not_in_markup = function() return not M.in_markup() end
 M.wordtrig_patterns = {
-    [M.in_math] = '[%w.]',
+    [M.in_math] = '[%a.]',
 }
 M.snippets_toggle = true
 
@@ -90,18 +90,32 @@ local alts_regex = '[\\[\\(](.*|.*)[\\)\\]]'
 function M.engine(trigger, opts)
     local base_engine = lsengines.ecma(trigger, opts)
 
+    -- blacklist setup
+    local blacklist_set = {}
+    local blacklist_length_set = {}
+    for _, black in ipairs(opts.blacklist) do
+        blacklist_length_set[#black] = true
+    end
+    utils.generate_bool_set(opts.blacklist, blacklist_set)
+
     -- determine possibly max/fixed length of trigger
     local max_length = opts.maxTrigLength
     local is_fixed_length = false
     if max_length == nil and alts_regex ~= '' and not trigger:match('[%+%*]') then
+        local n_lb = utils.count_string(trigger, '%(')
+        local n_rb = utils.count_string(trigger, '%)')
+        local n_rlb_diff = math.abs(n_lb - n_rb)
         max_length = #trigger
             - utils.count_string(trigger, '\\')
-            - utils.count_string(trigger, '%(')
-            - utils.count_string(trigger, '%)')
             - utils.count_string(trigger, '%?')
+            - (n_lb + n_rb)
+            + n_rlb_diff
         is_fixed_length = not trigger:match('[%+%*%?%[%]|]')
 
-        local alts_match = alts_regex:match(trigger) -- find longest trigger in [...|...]
+        local alts_match = nil
+        if n_rlb_diff == 0 then
+            alts_match = alts_regex:match(trigger) -- find longest trigger in [...|...]
+        end
         if alts_match then
             for _, alts in ipairs(alts_match) do
                 local max_alt_length = 1
@@ -159,8 +173,12 @@ function M.engine(trigger, opts)
         end
 
         -- blacklist
-        for _, w in ipairs(opts.blacklist) do
-            if line_full:sub(-#w) == w then return nil end
+        if opts.wordTrig then
+            if blacklist_set[whole] then return nil end
+        else
+            for length in pairs(blacklist_length_set) do
+                if blacklist_set[line_full:sub(-length)] then return nil end
+            end
         end
         return whole, captures
     end

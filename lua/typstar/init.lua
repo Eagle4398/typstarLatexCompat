@@ -1,8 +1,8 @@
 local M = {}
 local luasnip
 local config = require('typstar.config')
-local VERSION = '1.5.1'
-local VERSION_INFO = 'BREAKING: changed inline math trigger: ll -> kk'
+local VERSION = '1.6.1'
+local VERSION_INFO = ''
 
 local notify_plugin_update = function()
     local key = 'typstar_version'

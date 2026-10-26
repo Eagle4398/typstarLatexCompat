@@ -25,6 +25,7 @@ local default_config = {
         fileExtensionInserted = '.rnote.svg', -- valid rnote export type
         uriOpenCommand = 'xdg-open', -- see comment above for excalidraw
         templatePath = {},
+        maxWatchedFiles = 10,
     },
     snippets = {
         enable = true,
@@ -34,6 +35,7 @@ local default_config = {
             'math',
             'matrix',
             'markup',
+            'theorems',
             'visual',
             'auto-align',
         },

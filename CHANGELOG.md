@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.6.1 - 2026-09-21
+PR #30
+
+### Changed
+- extended subscript and superscript triggers
+
+### Fixed
+- rnote export on file change (see #29)
+- dot matrix triggers
+- removed dropped nix system
+
+## 1.6.0 - 2026-06-14
+PR #28
+
+### Changed
+- theorem snippet triggers have less conflicts (`thm`, `prf`, `prp`, `lmm`, `crl`, `axm`, `dfn`, `exm`, `rmr`)
+- theorem snippets have been moved into a separate module (enabled by default)
+- math triggers allow numbers in front of them (e.g. `3x1 ` for `3x_1 `)
+- `br` snippet uses `dash` instead of `macron`
+- matrix triggers are now `<dim>ma ` and `<dim>ma.`
+
+### Fixed
+- Anki string fronts will be compiled in Typst strings for full unicode compatibility
+- matrix snippet edge cases (e.g. with dimension 1)
+- letter prime snippet conflict edge cases
+
 ## 1.5.1 - 2026-03-27
 
 ### Changed
