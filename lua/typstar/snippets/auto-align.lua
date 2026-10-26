@@ -21,8 +21,8 @@ for _, op in ipairs(ops2) do table.insert(ops, op) end
 
 -- returns the node that should be aligned relative to from the current cursor
 local function get_root_node()
+    local bufnr = vim.api.nvim_get_current_buf()
     local cursor_row, cursor_col = unpack(vim.api.nvim_win_get_cursor(0))
-    -- tresitter is 0 indexed, lua not.
     cursor_row = cursor_row - 1
     local node = vim.treesitter.get_node({ bufnr = bufnr, pos = { cursor_row, cursor_col } })
 
@@ -110,6 +110,7 @@ local function collect_ops_between_last_breaks(ops)
 
     -- FIND LINE DELIMITERS ABSOLUTE POSITIONS
     -- using in-order tree traversal
+    ---@type TSNode?
     local last1, last2 = nil, nil
     local function walk(n)
         -- get a list of children
