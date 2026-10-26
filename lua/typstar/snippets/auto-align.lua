@@ -1,12 +1,3 @@
--- TODO: Bug with norm ?
---
---
--- & norm(a) \
---  = &
--- nor &m(a) \
--- <==>  &
---
---
 local helper = require('typstar.autosnippets')
 local ls = require('luasnip')
 local tp = require('typstar.autosnippets')
